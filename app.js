@@ -13,6 +13,7 @@ let countdownTitle = "";
 let countdownDate = "";
 let countdownValue = Date;
 let countdownActive;
+let savedCountDown;
 
 const second = 1000;
 const minute = second * 60;
@@ -29,27 +30,26 @@ const updateDOM = () => {
     const hours = Math.floor((distance % day) / hour); //Get remaning decimal point form days and divide by hour
     const minutes = Math.floor((distance % hour) / minute);
     const seconds = Math.floor((distance % minute) / second);
-    // console.log(days,hours,minutes,seconds);
 
     // Hide Inpute Container
     inputContainer.hidden = true;
 
     //If the has ended populate the complete
 
-    if(distance < 0){
-        coutdownEl.hidden = true;
-        clearInterval(countdownActive)
-        completeElinfo.textContent = `${countdownTitle} finished at ${countdownDate}`
-        completeEl.hidden = false;
-    }else{
-        // Populate Countdown
-        countdownElTitle.textContent = `${countdownTitle}`;
-        timeElements[0].textContent = `${days}`;
-        timeElements[1].textContent = `${hours}`;
-        timeElements[2].textContent = `${minutes}`;
-        timeElements[3].textContent = `${seconds}`;
-        completeEl.hidden = true
-        coutdownEl.hidden = false
+    if (distance < 0) {
+      coutdownEl.hidden = true;
+      clearInterval(countdownActive);
+      completeElinfo.textContent = `${countdownTitle} finished at ${countdownDate}`;
+      completeEl.hidden = false;
+    } else {
+      // Populate Countdown
+      countdownElTitle.textContent = `${countdownTitle}`;
+      timeElements[0].textContent = `${days}`;
+      timeElements[1].textContent = `${hours}`;
+      timeElements[2].textContent = `${minutes}`;
+      timeElements[3].textContent = `${seconds}`;
+      completeEl.hidden = true;
+      coutdownEl.hidden = false;
     }
   }, second);
 };
@@ -63,6 +63,11 @@ const updateCountdown = (e) => {
   e.preventDefault();
   countdownTitle = e.srcElement[0].value;
   countdownDate = e.srcElement[1].value;
+  savedCountDown = {
+    title: countdownTitle,
+    date: countdownDate,
+  };
+  localStorage.setItem("countdown", JSON.stringify(savedCountDown));
   //   Check for valid date
   if (countdownDate === "") {
     alert("Please Select a date for the countDown");
@@ -86,9 +91,29 @@ const reset = () => {
   // Reset Valuee
   countdownElTitle = " ";
   countdownDate = " ";
+  //Remove all value of local storage
+  localStorage.removeItem('countdown')
+};
+
+const restoreData = () => {
+  if (localStorage.getItem("countdown")) {
+    inputContainer.hidden = true;
+    savedCountDown = JSON.parse(localStorage.getItem("countdown"));
+    countdownTitle = savedCountDown.title;
+    countdownDate = savedCountDown.date;
+    // Get Number version of current Date and Update DOM
+    countdownValue = new Date(countdownDate).getTime();
+    // console.log(countdownValue);
+    updateDOM();
+  }
 };
 
 // Event Listner
 countdownForm.addEventListener("submit", updateCountdown);
 countdownBtn.addEventListener("click", reset);
-completeElBtn.addEventListener('click',reset)
+completeElBtn.addEventListener("click", reset);
+
+
+
+// onload
+restoreData();
