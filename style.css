@@ -40,7 +40,7 @@ video {
   top: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(255, 255, 255, .35);
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 /* Container */
@@ -54,7 +54,7 @@ video {
   z-index: 2;
   display: flex;
   justify-content: center;
-  background: rgba(255, 255, 255, .85);
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .input-container {
@@ -104,8 +104,8 @@ button {
   outline: none;
 }
 
-button:hover{
-    filter: brightness(110%);
+button:hover {
+  filter: brightness(110%);
 }
 /* Countdown */
 ul {
@@ -113,6 +113,7 @@ ul {
 }
 
 li {
+  display: inline-block;
   font-size: 30px;
   list-style-type: none;
   padding: 10px;
@@ -130,7 +131,28 @@ li span {
   position: relative;
   top: 60px;
 }
+.complete-title{
+    animation: complete 4s infinite;
+}
 
+@keyframes complete{
+    0%{
+        color: rgb(233, 13, 133);
+    }
+    25%{
+        color: rgb(233, 211, 13);
+    }
+    50%{
+        color: rgb(64, 233, 13);
+        transform: scale(1.5);
+    }
+    75%{
+        color: rgb(0, 38, 253);
+    }
+    100%{
+        color: rgb(165, 8, 176);
+    }
+}
 /* Media Query: Large Smartphone (Vertical) */
 @media screen and (max-width: 600px) {
   .video-background {
