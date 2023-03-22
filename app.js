@@ -4,7 +4,10 @@ const inputContainer = document.querySelector("#input-container"),
   coutdownEl = document.querySelector("#countdown"),
   countdownElTitle = document.querySelector("#countdown-title"),
   countdownBtn = document.querySelector("#countdown-button"),
-  timeElements = document.querySelectorAll("span");
+  timeElements = document.querySelectorAll("span"),
+  completeElinfo = document.querySelector("#complete-info"),
+  completeEl = document.querySelector("#complete"),
+  completeElBtn = document.querySelector("#complete-button");
 
 let countdownTitle = "";
 let countdownDate = "";
@@ -28,18 +31,26 @@ const updateDOM = () => {
     const seconds = Math.floor((distance % minute) / second);
     // console.log(days,hours,minutes,seconds);
 
-    // Populate Countdown
-    countdownElTitle.textContent = `${countdownTitle}`;
-    timeElements[0].textContent = `${days}`;
-    timeElements[1].textContent = `${hours}`;
-    timeElements[2].textContent = `${minutes}`;
-    timeElements[3].textContent = `${seconds}`;
-
     // Hide Inpute Container
     inputContainer.hidden = true;
 
-    // Show ccountdown
-    coutdownEl.hidden = false;
+    //If the has ended populate the complete
+
+    if(distance < 0){
+        coutdownEl.hidden = true;
+        clearInterval(countdownActive)
+        completeElinfo.textContent = `${countdownTitle} finished at ${countdownDate}`
+        completeEl.hidden = false;
+    }else{
+        // Populate Countdown
+        countdownElTitle.textContent = `${countdownTitle}`;
+        timeElements[0].textContent = `${days}`;
+        timeElements[1].textContent = `${hours}`;
+        timeElements[2].textContent = `${minutes}`;
+        timeElements[3].textContent = `${seconds}`;
+        completeEl.hidden = true
+        coutdownEl.hidden = false
+    }
   }, second);
 };
 
@@ -67,15 +78,17 @@ const updateCountdown = (e) => {
 const reset = () => {
   // Hide Countdown
   coutdownEl.hidden = true;
+  completeEl.hidden = true;
   // Show Input Conatiner
   inputContainer.hidden = false;
   // Close Countdown Interval
   clearInterval(countdownActive);
   // Reset Valuee
-  countdownElTitle = "";
-  countdownDate = "";
+  countdownElTitle = " ";
+  countdownDate = " ";
 };
 
 // Event Listner
 countdownForm.addEventListener("submit", updateCountdown);
 countdownBtn.addEventListener("click", reset);
+completeElBtn.addEventListener('click',reset)
