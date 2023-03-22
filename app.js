@@ -92,7 +92,7 @@ const reset = () => {
   countdownElTitle = " ";
   countdownDate = " ";
   //Remove all value of local storage
-  localStorage.removeItem('countdown')
+  localStorage.removeItem("countdown")
 };
 
 const restoreData = () => {
