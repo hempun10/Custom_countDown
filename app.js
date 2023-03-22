@@ -99,8 +99,13 @@ const restoreData = () => {
   if (localStorage.getItem("countdown")) {
     inputContainer.hidden = true;
     savedCountDown = JSON.parse(localStorage.getItem("countdown"));
-    countdownTitle = savedCountDown.title;
-    countdownDate = savedCountDown.date;
+    if(savedCountDown.title === '' && savedCountDown.date === '') {
+        reset();
+    }else{
+
+        countdownTitle = savedCountDown.title;
+        countdownDate = savedCountDown.date;
+    }
     // Get Number version of current Date and Update DOM
     countdownValue = new Date(countdownDate).getTime();
     // console.log(countdownValue);
